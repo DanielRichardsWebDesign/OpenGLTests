@@ -1,7 +1,7 @@
-#include <iostream>
 #include <GL/glew.h>
 #include <GL/freeglut.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
 
 int main(void)
 {
@@ -9,7 +9,7 @@ int main(void)
 
 	/* Initialize the library */
 	if (!glfwInit())
-		return -1;
+		return -1;	
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
@@ -22,6 +22,25 @@ int main(void)
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 
+	if (glewInit() != GLEW_OK)
+		std::cout << "Error" << std::endl;
+
+	float positions[6] = {
+		-0.5f, -0.5f,
+		0.0f, 0.5f,
+		0.5f, -0.5f,
+	};
+
+	unsigned int buffer;
+	glGenBuffers(1, &buffer);
+	glBindBuffer(GL_ARRAY_BUFFER, buffer);
+	glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
@@ -29,12 +48,15 @@ int main(void)
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		/* Code to draw our triangle */
-		glBegin(GL_TRIANGLES);
+		//glBegin(GL_TRIANGLES);
 
 		/* Defining 3 vertices for our triangle */
-		glVertex2f(-0.5f, -0.5f);
+		/*glVertex2f(-0.5f, -0.5f);
 		glVertex2f(0.0f, 0.5f);
-		glVertex2f(0.5f, -0.5f);
+		glVertex2f(0.5f, -0.5f);*/
+
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		
 
 		glEnd();
 
